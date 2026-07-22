@@ -24,6 +24,7 @@ erDiagram
         boolean is_active
         timestamp created_at
         timestamp updated_at
+        
     }
 
     PATIENTS {
