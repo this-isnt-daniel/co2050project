@@ -15,6 +15,10 @@ WORKDIR /app
 
 # Non-root user for security
 RUN addgroup -S forensic && adduser -S forensic -G forensic
+
+# Create storage directory and set ownership
+RUN mkdir -p /data/documents && chown -R forensic:forensic /data/documents
+
 USER forensic
 
 COPY --from=build /workspace/target/*.jar app.jar

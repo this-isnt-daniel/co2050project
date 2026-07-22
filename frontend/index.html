@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forensic Medicine Department</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Login View -->
+        <div id="login-view" class="view active">
+            <div class="login-container">
+                <div class="login-header">
+                    <h1>Forensic Medicine Dept</h1>
+                    <p>Secure System Access</p>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div id="login-error" class="error-message" style="display: none;"></div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Shell -->
+        <div id="dashboard-view" class="view" style="display: none;">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Forensic Dept</h2>
+                </div>
+                <nav class="sidebar-nav" id="sidebar-nav">
+                    <!-- Dynamic navigation based on role will be injected here -->
+                </nav>
+                <div class="sidebar-footer">
+                    <button id="logout-btn" class="btn btn-secondary btn-full">Logout</button>
+                </div>
+            </aside>
+            <main class="main-content">
+                <header class="topbar">
+                    <div class="page-title">
+                        <h2 id="current-page-title">Dashboard Overview</h2>
+                    </div>
+                    <div class="user-info">
+                        <span id="user-role-badge" class="badge">ROLE</span>
+                        <span id="user-name">Username</span>
+                    </div>
+                </header>
+                <div class="content-area" id="content-area">
+                    <!-- Dynamic content will be injected here -->
+                </div>
+            </main>
+        </div>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/modules/document.js"></script>
+    <script src="js/modules/patient.js"></script>
+    <script src="js/modules/case.js"></script>
+    <script src="js/modules/evidence.js"></script>
+    <script src="js/modules/labtest.js"></script>
+    <script src="js/modules/courtreport.js"></script>
+    <script src="js/modules/user.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

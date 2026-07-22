@@ -18,8 +18,8 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
     Page<PatientEntity> findByFullNameContainingIgnoreCase(String name, Pageable pageable);
 
     @Query("SELECT p FROM PatientEntity p WHERE " +
-           "(:name IS NULL OR LOWER(p.fullName) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
-           "(:gender IS NULL OR p.gender = :gender)")
+           "(CAST(:name AS string) IS NULL OR LOWER(p.fullName) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))) AND " +
+           "(CAST(:gender AS string) IS NULL OR p.gender = CAST(:gender AS string))")
     Page<PatientEntity> search(@Param("name") String name,
                                @Param("gender") String gender,
                                Pageable pageable);

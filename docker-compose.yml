@@ -44,6 +44,15 @@ services:
       db:
         condition: service_healthy
 
+  frontend:
+    image: nginx:alpine
+    container_name: forensic_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+
 volumes:
   postgres_data:
   document_storage:

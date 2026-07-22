@@ -41,6 +41,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(request));
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Update an existing user account (ADMIN only)")
+    public ResponseEntity<UserResponse> update(@PathVariable Long id, @Valid @RequestBody UserRequest request) {
+        return ResponseEntity.ok(userService.update(id, request));
+    }
+
     @PatchMapping("/{id}/deactivate")
     @Operation(summary = "Deactivate a user account (ADMIN only)")
     public ResponseEntity<UserResponse> deactivate(@PathVariable Long id) {

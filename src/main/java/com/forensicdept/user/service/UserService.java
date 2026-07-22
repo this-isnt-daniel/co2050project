@@ -43,6 +43,9 @@ public class UserService {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new DuplicateResourceException("Username already exists: " + request.getUsername());
         }
+        if (request.getPassword() == null || request.getPassword().trim().isEmpty() || request.getPassword().length() < 8) {
+            throw new IllegalArgumentException("Password is required and must be at least 8 characters");
+        }
         StaffEntity staff = null;
         if (request.getStaffId() != null) {
             staff = staffRepository.findById(request.getStaffId())
@@ -54,6 +57,37 @@ public class UserService {
                 .userRole(request.getUserRole())
                 .staff(staff)
                 .build();
+        return toResponse(userRepository.save(user));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
+    public UserResponse update(Long id, UserRequest request) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", id));
+        
+        if (!user.getUsername().equals(request.getUsername()) &&
+            userRepository.existsByUsername(request.getUsername())) {
+            throw new DuplicateResourceException("Username already exists: " + request.getUsername());
+        }
+        
+        user.setUsername(request.getUsername());
+        
+        // Only update password if provided and not empty
+        if (request.getPassword() != null && !request.getPassword().trim().isEmpty()) {
+            user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        }
+        
+        user.setUserRole(request.getUserRole());
+        
+        if (request.getStaffId() != null) {
+            StaffEntity staff = staffRepository.findById(request.getStaffId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Staff", request.getStaffId()));
+            user.setStaff(staff);
+        } else {
+            user.setStaff(null);
+        }
+        
         return toResponse(userRepository.save(user));
     }
 

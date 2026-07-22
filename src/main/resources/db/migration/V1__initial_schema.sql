@@ -169,7 +169,7 @@ CREATE TABLE court_reports (
 -- ---------------------------------------------------------------------------
 CREATE TABLE documents (
     id           BIGSERIAL PRIMARY KEY,
-    owner_type   VARCHAR(50)   NOT NULL CHECK (owner_type IN ('MLEF','POSTMORTEM','COURT_REPORT','CASE')),
+    owner_type   VARCHAR(50)   NOT NULL,
     owner_id     BIGINT        NOT NULL,
     file_name    VARCHAR(255)  NOT NULL,
     file_type    VARCHAR(50),

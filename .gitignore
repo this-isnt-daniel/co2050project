@@ -49,3 +49,6 @@ data/documents/
 
 # Docker
 docker-compose.override.yml
+
+# Readables
+docs/Readables/
