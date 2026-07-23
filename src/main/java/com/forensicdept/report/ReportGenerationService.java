@@ -24,4 +24,13 @@ public interface ReportGenerationService {
      * @return PDF bytes
      */
     ByteArrayOutputStream generatePmr(Long postmortemId);
+
+    /**
+     * Generates a report (MLR or PMR) dynamically based on Case ID.
+     *
+     * @param caseId the associated case id
+     * @param type "MLR", "MLEF", or "PMR"
+     * @return PDF bytes
+     */
+    ByteArrayOutputStream generateReportByCase(Long caseId, String type);
 }

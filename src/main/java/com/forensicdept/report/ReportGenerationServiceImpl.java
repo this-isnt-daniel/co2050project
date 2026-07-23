@@ -128,6 +128,21 @@ public class ReportGenerationServiceImpl implements ReportGenerationService {
         return bos;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public ByteArrayOutputStream generateReportByCase(Long caseId, String type) {
+        if ("MLR".equalsIgnoreCase(type) || "MLEF".equalsIgnoreCase(type)) {
+            MlefEntity mlef = mlefRepository.findByCaseRefId(caseId)
+                    .orElseThrow(() -> new ResourceNotFoundException("MLEF for Case", caseId));
+            return generateMlr(mlef.getId());
+        } else if ("PMR".equalsIgnoreCase(type)) {
+            PostmortemEntity pm = postmortemRepository.findByCaseRefId(caseId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Postmortem for Case", caseId));
+            return generatePmr(pm.getId());
+        }
+        throw new IllegalArgumentException("Unknown report type: " + type);
+    }
+
     private Paragraph sectionParagraph(String label, String value, Font headFont, Font bodyFont) {
         Paragraph p = new Paragraph();
         p.add(new Chunk(label + ": ", headFont));

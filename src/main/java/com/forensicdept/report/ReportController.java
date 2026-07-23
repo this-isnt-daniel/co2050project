@@ -34,6 +34,13 @@ public class ReportController {
         return pdfResponse(bos, "PMR-" + postmortemId + ".pdf");
     }
 
+    @GetMapping("/case/{caseId}")
+    @Operation(summary = "Generate and download report by Case ID and type")
+    public ResponseEntity<byte[]> downloadByCase(@PathVariable Long caseId, @RequestParam String type) {
+        ByteArrayOutputStream bos = reportGenerationService.generateReportByCase(caseId, type);
+        return pdfResponse(bos, type + "-Case-" + caseId + ".pdf");
+    }
+
     private ResponseEntity<byte[]> pdfResponse(ByteArrayOutputStream bos, String filename) {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")

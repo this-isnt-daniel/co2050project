@@ -200,6 +200,7 @@ class CourtReportModule {
                         <td>${r.dateOfTrial || '-'}</td>
                         <td>
                             <button class="btn btn-sm" onclick="CourtReportModule.openUpdateForm(${r.id}, ${r.caseId}, '${r.reportType}', '${r.reportStatus}', '${r.dateOfTrial || ''}')">Update</button>
+                            <button class="btn btn-sm" onclick="CourtReportModule.downloadPdf(${r.caseId}, '${r.reportType}')">Download</button>
                         </td>
                     </tr>
                 `;
@@ -219,5 +220,35 @@ class CourtReportModule {
         document.getElementById('update-form-container').style.display = 'block';
         document.getElementById('report-form-container').style.display = 'none';
         document.getElementById('update-form-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    static async downloadPdf(caseId, type) {
+        try {
+            const token = ApiClient.getToken();
+            const response = await fetch(`http://localhost:8080/api/reports/case/${caseId}?type=${type}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to generate PDF. Make sure the ' + type + ' record exists for this case.');
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `${type}-Case-${caseId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (err) {
+            console.error('PDF download error:', err);
+            alert(err.message);
+        }
     }
 }
