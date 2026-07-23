@@ -2,6 +2,7 @@ package com.forensicdept.mlef.service;
 
 import com.forensicdept.casemanagement.entity.CaseEntity;
 import com.forensicdept.casemanagement.repository.CaseRepository;
+import com.forensicdept.common.service.SerialNumberService;
 import com.forensicdept.exception.DuplicateResourceException;
 import com.forensicdept.exception.ResourceNotFoundException;
 import com.forensicdept.mlef.dto.MlefRequest;
@@ -27,6 +28,7 @@ public class MlefService {
     private final MlefRepository mlefRepository;
     private final CaseRepository caseRepository;
     private final StaffRepository staffRepository;
+    private final SerialNumberService serialNumberService;
 
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR','JMO')")
     @Transactional(readOnly = true)
@@ -58,10 +60,20 @@ public class MlefService {
         StaffEntity doctor = staffRepository.findById(request.getExaminingDoctorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Staff", request.getExaminingDoctorId()));
 
+        // Generate official serial number — permanent, never reused.
+        String mlefNumber = serialNumberService.nextSerial("MLEF");
+
         MlefEntity entity = MlefEntity.builder()
+                .mlefNumber(mlefNumber)
                 .caseRef(caseRef)
                 .examiningDoctor(doctor)
                 .dateOfIssue(request.getDateOfIssue())
+                .receivedDate(request.getReceivedDate())
+                .referringHospital(request.getReferringHospital())
+                .referringMedicalOfficer(request.getReferringMedicalOfficer())
+                .policeStation(request.getPoliceStation())
+                .policeReference(request.getPoliceReference())
+                .caseReference(request.getCaseReference())
                 .examinationDateTime(request.getExaminationDateTime())
                 .natureOfBodilyHarm(request.getNatureOfBodilyHarm())
                 .causativeWeapon(request.getCausativeWeapon())
@@ -77,7 +89,15 @@ public class MlefService {
     public MlefResponse update(Long id, MlefRequest request) {
         MlefEntity entity = mlefRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("MLEF", id));
+
+        // mlefNumber is never updated — it is permanent once assigned.
         entity.setDateOfIssue(request.getDateOfIssue());
+        entity.setReceivedDate(request.getReceivedDate());
+        entity.setReferringHospital(request.getReferringHospital());
+        entity.setReferringMedicalOfficer(request.getReferringMedicalOfficer());
+        entity.setPoliceStation(request.getPoliceStation());
+        entity.setPoliceReference(request.getPoliceReference());
+        entity.setCaseReference(request.getCaseReference());
         entity.setExaminationDateTime(request.getExaminationDateTime());
         entity.setNatureOfBodilyHarm(request.getNatureOfBodilyHarm());
         entity.setCausativeWeapon(request.getCausativeWeapon());
@@ -98,12 +118,19 @@ public class MlefService {
 
     private MlefResponse toResponse(MlefEntity e) {
         return MlefResponse.builder()
+                .mlefNumber(e.getMlefNumber())
                 .id(e.getId())
                 .caseId(e.getCaseRef().getId())
                 .caseNumber(e.getCaseRef().getCaseNumber())
                 .examiningDoctorId(e.getExaminingDoctor().getId())
                 .examiningDoctorName(e.getExaminingDoctor().getName())
                 .dateOfIssue(e.getDateOfIssue())
+                .receivedDate(e.getReceivedDate())
+                .referringHospital(e.getReferringHospital())
+                .referringMedicalOfficer(e.getReferringMedicalOfficer())
+                .policeStation(e.getPoliceStation())
+                .policeReference(e.getPoliceReference())
+                .caseReference(e.getCaseReference())
                 .examinationDateTime(e.getExaminationDateTime())
                 .natureOfBodilyHarm(e.getNatureOfBodilyHarm())
                 .causativeWeapon(e.getCausativeWeapon())

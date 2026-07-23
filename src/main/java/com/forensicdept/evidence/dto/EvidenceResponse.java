@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @Builder
 public class EvidenceResponse {
+    private String evidenceNumber;
     private Long id;
     private Long caseId;
     private String evidenceType;

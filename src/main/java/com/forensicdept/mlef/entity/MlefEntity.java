@@ -23,6 +23,13 @@ public class MlefEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Official MLEF serial number, e.g. MLEF/2026/000001.
+     * Assigned once on creation — never changed afterwards.
+     */
+    @Column(name = "mlef_number", unique = true, length = 30)
+    private String mlefNumber;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "case_id", nullable = false)
     private CaseEntity caseRef;
@@ -31,8 +38,30 @@ public class MlefEntity {
     @JoinColumn(name = "examining_doctor_id", nullable = false)
     private StaffEntity examiningDoctor;
 
+    // --- Referral / receipt fields ---
+
     @Column(name = "date_of_issue")
     private LocalDate dateOfIssue;
+
+    @Column(name = "received_date")
+    private LocalDate receivedDate;
+
+    @Column(name = "referring_hospital", length = 255)
+    private String referringHospital;
+
+    @Column(name = "referring_medical_officer", length = 255)
+    private String referringMedicalOfficer;
+
+    @Column(name = "police_station", length = 255)
+    private String policeStation;
+
+    @Column(name = "police_reference", length = 100)
+    private String policeReference;
+
+    @Column(name = "case_reference", length = 100)
+    private String caseReference;
+
+    // --- Examination findings ---
 
     @Column(name = "examination_date_time")
     private LocalDateTime examinationDateTime;

@@ -24,6 +24,9 @@ public class EvidenceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "evidence_number", unique = true, length = 30)
+    private String evidenceNumber;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "case_id", nullable = false)
     private CaseEntity caseRef;
@@ -31,7 +34,7 @@ public class EvidenceEntity {
     @Column(name = "evidence_type", nullable = false, length = 100)
     private String evidenceType;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "storage_location", length = 255)

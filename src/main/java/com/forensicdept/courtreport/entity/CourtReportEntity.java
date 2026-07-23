@@ -3,6 +3,7 @@ package com.forensicdept.courtreport.entity;
 import com.forensicdept.audit.AuditEntityListener;
 import com.forensicdept.audit.Auditable;
 import com.forensicdept.casemanagement.entity.CaseEntity;
+import com.forensicdept.staff.entity.StaffEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,15 +23,21 @@ public class CourtReportEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "court_report_number", unique = true, length = 30)
+    private String courtReportNumber;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "case_id", nullable = false)
     private CaseEntity caseRef;
 
     @Column(name = "report_type", nullable = false, length = 20)
-    private String reportType;  // MLR | PMR
+    private String reportType;  // MLR | PMR | MLEF
 
     @Column(name = "submission_date")
     private LocalDate submissionDate;
+
+    @Column(name = "requested_date")
+    private LocalDate requestedDate;
 
     @Column(name = "report_status", nullable = false, length = 50)
     @Builder.Default
@@ -39,11 +46,18 @@ public class CourtReportEntity {
     @Column(name = "court_name", length = 255)
     private String courtName;
 
+    @Column(name = "court_case_number", length = 100)
+    private String courtCaseNumber;
+
     @Column(name = "date_of_trial")
     private LocalDate dateOfTrial;
 
     @Column(name = "certificate_of_receipt_ref", length = 255)
     private String certificateOfReceiptRef;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prepared_by")
+    private StaffEntity preparedBy;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

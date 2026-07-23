@@ -42,8 +42,10 @@ class App {
             { id: 'nav-users', label: 'User Management', roles: ['ADMIN'] },
             { id: 'nav-patients', label: 'Patients', roles: ['ADMIN', 'DOCTOR', 'JMO', 'CLERICAL', 'RESEARCHER'] },
             { id: 'nav-cases', label: 'Cases', roles: ['ADMIN', 'DOCTOR', 'JMO', 'CLERICAL', 'RESEARCHER'] },
+            { id: 'nav-mlef', label: 'MLEF Referrals', roles: ['ADMIN', 'DOCTOR', 'JMO'] },
             { id: 'nav-evidence', label: 'Evidence Chain', roles: ['ADMIN', 'LAB_STAFF', 'JMO'] },
             { id: 'nav-reports', label: 'Court Reports', roles: ['ADMIN', 'JMO', 'CLERICAL'] },
+            { id: 'nav-mlr', label: 'Medico-Legal Reports', roles: ['ADMIN', 'JMO', 'CLERICAL'] },
         ];
 
         links.forEach(link => {
@@ -87,6 +89,10 @@ class App {
             CourtReportModule.render(contentArea, role);
         } else if (pageId === 'nav-users') {
             UserModule.render(contentArea, role);
+        } else if (pageId === 'nav-mlef') {
+            MlefModule.render(contentArea, role);
+        } else if (pageId === 'nav-mlr') {
+            MlrModule.render(contentArea, role);
         } else {
             contentArea.innerHTML = `<div class="card"><div class="card-header">${pageId}</div><p>Module implementation pending...</p></div>`;
         }

@@ -13,6 +13,7 @@ public class DocumentResponse {
     private Long ownerId;
     private String fileName;
     private String fileType;
+    private Long fileSizeBytes;
     private String storagePath;
     private Long uploadedById;
     private String uploadedByUsername;

@@ -2,6 +2,7 @@ package com.forensicdept.evidence.service;
 
 import com.forensicdept.casemanagement.entity.CaseEntity;
 import com.forensicdept.casemanagement.repository.CaseRepository;
+import com.forensicdept.common.service.SerialNumberService;
 import com.forensicdept.evidence.dto.*;
 import com.forensicdept.evidence.entity.EvidenceCustodyLogEntity;
 import com.forensicdept.evidence.entity.EvidenceEntity;
@@ -28,6 +29,7 @@ public class EvidenceService {
     private final EvidenceCustodyLogRepository custodyLogRepository;
     private final CaseRepository caseRepository;
     private final StaffRepository staffRepository;
+    private final SerialNumberService serialNumberService;
 
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR','JMO','LAB_STAFF')")
     @Transactional(readOnly = true)
@@ -52,7 +54,11 @@ public class EvidenceService {
             collector = staffRepository.findById(request.getCollectedById())
                     .orElseThrow(() -> new ResourceNotFoundException("Staff", request.getCollectedById()));
         }
+
+        String evidenceNumber = serialNumberService.nextSerial("EV");
+
         EvidenceEntity entity = EvidenceEntity.builder()
+                .evidenceNumber(evidenceNumber)
                 .caseRef(caseRef)
                 .evidenceType(request.getEvidenceType())
                 .description(request.getDescription())
@@ -107,6 +113,7 @@ public class EvidenceService {
                 .stream().map(this::toCustodyResponse).toList();
 
         return EvidenceResponse.builder()
+                .evidenceNumber(e.getEvidenceNumber())
                 .id(e.getId())
                 .caseId(e.getCaseRef().getId())
                 .evidenceType(e.getEvidenceType())

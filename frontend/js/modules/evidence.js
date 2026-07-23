@@ -120,7 +120,7 @@ class EvidenceModule {
                 return `
                 <div class="card" style="margin-bottom: 1rem; border: 1px solid #dee2e6; box-shadow: none;">
                     <div style="display: flex; justify-content: space-between;">
-                        <strong>${ev.evidenceType}</strong>
+                        <strong>${ev.evidenceNumber || 'No ID'} - ${ev.evidenceType}</strong>
                         <button class="btn btn-sm" onclick="EvidenceModule.openTransferForm(${ev.id})">Transfer Custody</button>
                     </div>
                     <p style="margin: 0.5rem 0; font-size: 0.9rem;">${ev.description} (Loc: ${ev.storageLocation || 'N/A'})</p>

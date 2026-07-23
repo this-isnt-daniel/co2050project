@@ -17,7 +17,7 @@ public class DocumentEntity {
     private Long id;
 
     @Column(name = "owner_type", nullable = false, length = 50)
-    private String ownerType;   // MLEF | POSTMORTEM | COURT_REPORT | CASE
+    private String ownerType;   // MLEF | MLR | POSTMORTEM | COURT_REPORT | CASE | EVIDENCE
 
     @Column(name = "owner_id", nullable = false)
     private Long ownerId;
@@ -27,6 +27,9 @@ public class DocumentEntity {
 
     @Column(name = "file_type", length = 50)
     private String fileType;
+
+    @Column(name = "file_size_bytes")
+    private Long fileSizeBytes;
 
     @Column(name = "storage_path", nullable = false, length = 500)
     private String storagePath;
