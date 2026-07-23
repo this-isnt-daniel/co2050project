@@ -20,10 +20,10 @@ INSERT INTO staff (name, staff_role, contact_no, specialization, is_active) VALU
 -- Seed user accounts (BCrypt hash of "Password@123")
 -- ---------------------------------------------------------------------------
 INSERT INTO users (username, password_hash, user_role, staff_id, is_active) VALUES
-    ('admin',       '$2a$12$Xj3.fXb3tFJxU8Hm7NkHpO1rD5bFQ4qE2Z9mA7vL6sK8dY0wC3nGu', 'ADMIN',      6, TRUE),
-    ('dr.perera',   '$2a$12$Xj3.fXb3tFJxU8Hm7NkHpO1rD5bFQ4qE2Z9mA7vL6sK8dY0wC3nGu', 'DOCTOR',     1, TRUE),
-    ('dr.bandara',  '$2a$12$Xj3.fXb3tFJxU8Hm7NkHpO1rD5bFQ4qE2Z9mA7vL6sK8dY0wC3nGu', 'DOCTOR',     2, TRUE),
-    ('jmo.suresh',  '$2a$12$Xj3.fXb3tFJxU8Hm7NkHpO1rD5bFQ4qE2Z9mA7vL6sK8dY0wC3nGu', 'JMO',        3, TRUE),
-    ('lab.kamala',  '$2a$12$Xj3.fXb3tFJxU8Hm7NkHpO1rD5bFQ4qE2Z9mA7vL6sK8dY0wC3nGu', 'LAB_STAFF',  4, TRUE),
-    ('clerical.dilini','$2a$12$Xj3.fXb3tFJxU8Hm7NkHpO1rD5bFQ4qE2Z9mA7vL6sK8dY0wC3nGu', 'CLERICAL',5, TRUE),
-    ('researcher01','$2a$12$Xj3.fXb3tFJxU8Hm7NkHpO1rD5bFQ4qE2Z9mA7vL6sK8dY0wC3nGu', 'RESEARCHER', NULL, TRUE);
+    ('admin',       '{noop}Password@123', 'ADMIN',      6, TRUE),
+    ('dr.perera',   '{noop}Password@123', 'DOCTOR',     1, TRUE),
+    ('dr.bandara',  '{noop}Password@123', 'DOCTOR',     2, TRUE),
+    ('jmo.suresh',  '{noop}Password@123', 'JMO',        3, TRUE),
+    ('lab.kamala',  '{noop}Password@123', 'LAB_STAFF',  4, TRUE),
+    ('clerical.dilini','{noop}Password@123', 'CLERICAL',5, TRUE),
+    ('researcher01','{noop}Password@123', 'RESEARCHER', NULL, TRUE);

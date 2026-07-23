@@ -1,6 +1,6 @@
-# Forensic Medicine Department — Backend API
+# Forensic Medicine Department — Full Stack System
 
-A complete Spring Boot 3.x + PostgreSQL 15 backend for a university Forensic Medicine Department database system,
+A complete full-stack (Vanilla JS + Spring Boot 3.x + PostgreSQL 15) system for a university Forensic Medicine Department database system,
 replacing a manual paper-based record system. The system manages two operational streams (Clinical and Autopsy),
 enforces strict RBAC, maintains court-defensible audit trails, and generates medico-legal PDF reports.
 
@@ -72,16 +72,21 @@ docker-compose up --build
 This starts:
 - `forensic_db` — PostgreSQL 15 on port 5432
 - `forensic_app` — Spring Boot API on port 8080
+- `forensic_frontend` — NGINX hosting the web UI on port 3000
 
 Flyway automatically applies V1, V2, V3 migrations on first startup.
 
-### 4. Verify
+### 4. Verify & Access
 
 ```bash
+# 1. Access the Web Frontend (User Interface)
+open http://localhost:3000
+
+# 2. Verify Backend API health
 curl http://localhost:8080/actuator/health
 # → {"status":"UP"}
 
-# Swagger UI
+# 3. Swagger UI (API Docs)
 open http://localhost:8080/swagger-ui.html
 ```
 
@@ -115,11 +120,21 @@ export JWT_SECRET=your_64_char_hex_secret
 export DOCUMENT_STORAGE_PATH=./data/documents
 ```
 
-### 3. Run migrations and start
+### 3. Run migrations and start the backend
 
 ```bash
 mvn spring-boot:run
 ```
+
+### 4. Start the frontend locally
+
+You can use any local web server to serve the `frontend/` directory. For example, using Python or VS Code Live Server:
+
+```bash
+cd frontend
+python -m http.server 3000
+```
+Then visit `http://localhost:3000` in your browser.
 
 Flyway runs automatically on startup.
 

@@ -13,7 +13,7 @@ public class CourtReportRequest {
     private Long caseId;
 
     @NotNull(message = "Report type is required")
-    @Pattern(regexp = "MLR|PMR", message = "Report type must be MLR or PMR")
+    @Pattern(regexp = "MLR|PMR|MLEF", message = "Report type must be MLR, PMR, or MLEF")
     private String reportType;
 
     private LocalDate submissionDate;

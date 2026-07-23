@@ -18,7 +18,7 @@ public class StaffService {
 
     private final StaffRepository staffRepository;
 
-    @PreAuthorize("hasAnyRole('ADMIN','JMO','CLERICAL')")
+    @PreAuthorize("hasAnyRole('ADMIN','JMO','CLERICAL','DOCTOR')")
     @Transactional(readOnly = true)
     public Page<StaffResponse> findAll(String role, Pageable pageable) {
         if (role != null) {

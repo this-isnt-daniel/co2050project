@@ -31,7 +31,7 @@ erDiagram
         varchar(100) username "UK, NOT NULL"
         varchar(255) password_hash "NOT NULL"
         varchar(50) user_role "NOT NULL"
-        bigint staff_id FK "NOT NULL"
+        bigint staff_id FK
         boolean is_active "DEFAULT TRUE, NOT NULL"
         timestamp created_at "NOT NULL, UP"
         timestamp updated_at "NOT NULL"
@@ -95,7 +95,7 @@ erDiagram
     EVIDENCE {
         bigserial id PK
         bigint case_id FK "NOT NULL"
-        varchar(50) evidence_type "NOT NULL"
+        varchar(100) evidence_type "NOT NULL"
         text description "NOT NULL"
         varchar(255) storage_location
         bigint collected_by FK
@@ -107,8 +107,8 @@ erDiagram
     EVIDENCE_CUSTODY_LOG {
         bigserial id PK
         bigint evidence_id FK "NOT NULL"
-        bigint transferred_from FK "NOT NULL"
-        bigint transferred_to FK "NOT NULL"
+        bigint transferred_from FK
+        bigint transferred_to FK
         timestamp transfer_timestamp "NOT NULL"
         text reason "NOT NULL"
         timestamp created_at "NOT NULL, UP"
@@ -128,7 +128,7 @@ erDiagram
     COURT_REPORTS {
         bigserial id PK
         bigint case_id FK "NOT NULL"
-        varchar(100) report_type "NOT NULL"
+        varchar(20) report_type "NOT NULL"
         date submission_date
         varchar(50) report_status "NOT NULL"
         varchar(255) court_name

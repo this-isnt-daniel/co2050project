@@ -26,7 +26,7 @@ public class CaseService {
     private final StaffRepository staffRepository;
 
     /** ADMIN and JMO can see all cases; DOCTOR sees all via this method but filtered in controller. */
-    @PreAuthorize("hasAnyRole('ADMIN','JMO','CLERICAL','LAB_STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN','JMO','CLERICAL','LAB_STAFF','DOCTOR','RESEARCHER')")
     @Transactional(readOnly = true)
     public Page<CaseResponse> findAll(String status, String caseType, Long doctorId, Pageable pageable) {
         return caseRepository.search(status, caseType, doctorId, pageable).map(this::toResponse);
