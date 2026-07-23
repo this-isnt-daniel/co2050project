@@ -63,11 +63,24 @@ classDiagram
         updated_at
     }
 
+    class DOCUMENT_SERIAL_SEQUENCES {
+        doc_type
+        year
+        last_seq
+    }
+
     class MLEF {
         id
+        mlef_number
         case_id
         examining_doctor_id
         date_of_issue
+        received_date
+        referring_hospital
+        referring_medical_officer
+        police_station
+        police_reference
+        case_reference
         examination_date_time
         nature_of_bodily_harm
         causative_weapon
@@ -76,6 +89,30 @@ classDiagram
         report_status
         created_at
         updated_at
+    }
+
+    class MLR {
+        id
+        mlr_number
+        case_id
+        prepared_by
+        examination_date
+        date_finalized
+        report_status
+        digital_report_path
+        created_at
+        updated_at
+    }
+
+    class MLR_REVISIONS {
+        id
+        mlr_id
+        revision_number
+        report_status_at_revision
+        digital_report_path
+        revised_by
+        revision_reason
+        created_at
     }
 
     class POSTMORTEM {
@@ -94,6 +131,7 @@ classDiagram
 
     class EVIDENCE {
         id
+        evidence_number
         case_id
         evidence_type
         description
@@ -127,13 +165,17 @@ classDiagram
 
     class COURT_REPORTS {
         id
+        court_report_number
         case_id
         report_type
         submission_date
+        requested_date
         report_status
         court_name
+        court_case_number
         date_of_trial
         certificate_of_receipt_ref
+        prepared_by
         created_at
         updated_at
     }
@@ -144,6 +186,7 @@ classDiagram
         owner_id
         file_name
         file_type
+        file_size_bytes
         storage_path
         uploaded_by
         uploaded_at
@@ -175,6 +218,10 @@ classDiagram
     PATIENTS "1" -- "*" CASES : is subject of
     STAFF "1" -- "*" CASES : assigned as doctor
     CASES "1" -- "0..1" MLEF : has one MLEF
+    CASES "1" -- "0..1" MLR : has one MLR
+    MLR "1" -- "*" MLR_REVISIONS : revision history
+    STAFF "1" -- "*" MLR : prepared by
+    STAFF "1" -- "*" MLR_REVISIONS : revised by
     CASES "1" -- "0..1" POSTMORTEM : has one PM
     STAFF "1" -- "*" MLEF : examining doctor
     STAFF "1" -- "*" POSTMORTEM : pathologist
@@ -186,6 +233,7 @@ classDiagram
     CASES "1" -- "*" LABORATORY_TESTS : has lab tests
     STAFF "1" -- "*" LABORATORY_TESTS : requested by
     CASES "1" -- "*" COURT_REPORTS : has court reports
+    STAFF "1" -- "*" COURT_REPORTS : prepared by
     USERS "1" -- "*" DOCUMENTS : uploaded by
     CASES "1" -- "*" NOTIFICATIONS : related case
     USERS "1" -- "*" NOTIFICATIONS : target user

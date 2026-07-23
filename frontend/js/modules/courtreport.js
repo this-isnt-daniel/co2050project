@@ -32,6 +32,14 @@ class CourtReportModule {
                                 <label>Date of Trial (Optional)</label>
                                 <input type="date" id="rpt-trial-date">
                             </div>
+                            <div class="form-group">
+                                <label>Requested Date</label>
+                                <input type="date" id="rpt-req-date">
+                            </div>
+                            <div class="form-group">
+                                <label>Court Case Number</label>
+                                <input type="text" id="rpt-court-num">
+                            </div>
                         </div>
                         <div style="margin-top: 1rem;">
                             <button type="submit" class="btn">Draft Report</button>
@@ -54,11 +62,12 @@ class CourtReportModule {
                     <table>
                         <thead>
                             <tr>
-                                <th>Report ID</th>
+                                <th>Report #</th>
                                 <th>Case Num</th>
                                 <th>Type</th>
                                 <th>Status</th>
                                 <th>Court</th>
+                                <th>Court Case #</th>
                                 <th>Trial Date</th>
                                 <th>Actions</th>
                             </tr>
@@ -89,6 +98,14 @@ class CourtReportModule {
                             <label>Date of Trial (Optional)</label>
                             <input type="date" id="update-rpt-trial-date">
                         </div>
+                        <div class="form-group">
+                            <label>Requested Date</label>
+                            <input type="date" id="update-rpt-req-date">
+                        </div>
+                        <div class="form-group">
+                            <label>Court Case Number</label>
+                            <input type="text" id="update-rpt-court-num">
+                        </div>
                     </div>
                     <div style="margin-top: 1rem;">
                         <button type="submit" class="btn">Update Report</button>
@@ -118,7 +135,10 @@ class CourtReportModule {
                 reportType: document.getElementById('rpt-type').value,
                 reportStatus: 'DRAFT',
                 courtName: document.getElementById('rpt-court').value || null,
-                dateOfTrial: document.getElementById('rpt-trial-date').value || null
+                dateOfTrial: document.getElementById('rpt-trial-date').value || null,
+                requestedDate: document.getElementById('rpt-req-date').value || null,
+                courtCaseNumber: document.getElementById('rpt-court-num').value || null,
+                preparedById: AuthService.getUserInfo().userId
             };
 
             try {
@@ -138,7 +158,9 @@ class CourtReportModule {
                 caseId: parseInt(document.getElementById('update-rpt-case-id').value),
                 reportType: document.getElementById('update-rpt-type').value,
                 reportStatus: document.getElementById('update-rpt-status').value,
-                dateOfTrial: document.getElementById('update-rpt-trial-date').value || null
+                dateOfTrial: document.getElementById('update-rpt-trial-date').value || null,
+                requestedDate: document.getElementById('update-rpt-req-date').value || null,
+                courtCaseNumber: document.getElementById('update-rpt-court-num').value || null
             };
 
             try {
@@ -192,14 +214,15 @@ class CourtReportModule {
                 const bg = r.reportStatus === 'ISSUED' ? '#d4edda' : (r.reportStatus === 'DRAFT' ? '#fff3cd' : '#d1ecf1');
                 return `
                     <tr>
-                        <td>${r.id}</td>
+                        <td>${r.courtReportNumber || r.id}</td>
                         <td>${r.caseNumber || r.caseId}</td>
                         <td>${r.reportType}</td>
                         <td><span class="badge" style="background: ${bg}; color: ${color}">${r.reportStatus}</span></td>
                         <td>${r.courtName || '-'}</td>
+                        <td>${r.courtCaseNumber || '-'}</td>
                         <td>${r.dateOfTrial || '-'}</td>
                         <td>
-                            <button class="btn btn-sm" onclick="CourtReportModule.openUpdateForm(${r.id}, ${r.caseId}, '${r.reportType}', '${r.reportStatus}', '${r.dateOfTrial || ''}')">Update</button>
+                            <button class="btn btn-sm" onclick="CourtReportModule.openUpdateForm(${r.id}, ${r.caseId}, '${r.reportType}', '${r.reportStatus}', '${r.dateOfTrial || ''}', '${r.requestedDate || ''}', '${r.courtCaseNumber || ''}')">Update</button>
                             <button class="btn btn-sm" onclick="CourtReportModule.downloadPdf(${r.caseId}, '${r.reportType}')">Download</button>
                         </td>
                     </tr>
@@ -210,12 +233,14 @@ class CourtReportModule {
         }
     }
 
-    static openUpdateForm(id, caseId, type, status, trialDate) {
+    static openUpdateForm(id, caseId, type, status, trialDate, requestedDate, courtCaseNumber) {
         document.getElementById('update-rpt-id').value = id;
         document.getElementById('update-rpt-case-id').value = caseId;
         document.getElementById('update-rpt-type').value = type;
         document.getElementById('update-rpt-status').value = status;
         document.getElementById('update-rpt-trial-date').value = trialDate;
+        document.getElementById('update-rpt-req-date').value = requestedDate;
+        document.getElementById('update-rpt-court-num').value = courtCaseNumber;
         
         document.getElementById('update-form-container').style.display = 'block';
         document.getElementById('report-form-container').style.display = 'none';

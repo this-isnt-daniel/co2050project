@@ -63,11 +63,24 @@ erDiagram
         timestamp updated_at "NOT NULL"
     }
 
+    DOCUMENT_SERIAL_SEQUENCES {
+        varchar(10) doc_type PK
+        integer year PK
+        integer last_seq "DEFAULT 0, NOT NULL"
+    }
+
     MLEF {
         bigserial id PK
+        varchar(30) mlef_number "UK"
         bigint case_id FK "UK, NOT NULL"
         bigint examining_doctor_id FK "NOT NULL"
         date date_of_issue
+        date received_date
+        varchar(255) referring_hospital
+        varchar(255) referring_medical_officer
+        varchar(255) police_station
+        varchar(100) police_reference
+        varchar(100) case_reference
         timestamp examination_date_time
         text nature_of_bodily_harm
         varchar(255) causative_weapon
@@ -76,6 +89,30 @@ erDiagram
         varchar(50) report_status "NOT NULL"
         timestamp created_at "NOT NULL, UP"
         timestamp updated_at "NOT NULL"
+    }
+
+    MLR {
+        bigserial id PK
+        varchar(30) mlr_number "UK, NOT NULL"
+        bigint case_id FK "UK, NOT NULL"
+        bigint prepared_by FK "NOT NULL"
+        date examination_date
+        date date_finalized
+        varchar(20) report_status "DEFAULT 'DRAFT', NOT NULL"
+        varchar(500) digital_report_path
+        timestamp created_at "NOT NULL, UP"
+        timestamp updated_at "NOT NULL"
+    }
+
+    MLR_REVISIONS {
+        bigserial id PK
+        bigint mlr_id FK "NOT NULL"
+        integer revision_number "NOT NULL"
+        varchar(20) report_status_at_revision "NOT NULL"
+        varchar(500) digital_report_path
+        bigint revised_by FK
+        text revision_reason
+        timestamp created_at "NOT NULL, UP"
     }
 
     POSTMORTEM {
@@ -94,6 +131,7 @@ erDiagram
 
     EVIDENCE {
         bigserial id PK
+        varchar(30) evidence_number "UK"
         bigint case_id FK "NOT NULL"
         varchar(100) evidence_type "NOT NULL"
         text description "NOT NULL"
@@ -127,13 +165,17 @@ erDiagram
 
     COURT_REPORTS {
         bigserial id PK
+        varchar(30) court_report_number "UK"
         bigint case_id FK "NOT NULL"
         varchar(20) report_type "NOT NULL"
         date submission_date
+        date requested_date
         varchar(50) report_status "NOT NULL"
         varchar(255) court_name
+        varchar(100) court_case_number
         date date_of_trial
-        varchar(100) certificate_of_receipt_ref
+        varchar(255) certificate_of_receipt_ref
+        bigint prepared_by FK
         timestamp created_at "NOT NULL, UP"
         timestamp updated_at "NOT NULL"
     }
@@ -143,7 +185,8 @@ erDiagram
         varchar(50) owner_type "NOT NULL"
         bigint owner_id "NOT NULL"
         varchar(255) file_name "NOT NULL"
-        varchar(50) file_type "NOT NULL"
+        varchar(50) file_type
+        bigint file_size_bytes
         varchar(500) storage_path "NOT NULL"
         bigint uploaded_by FK "NOT NULL"
         timestamp uploaded_at "NOT NULL"
@@ -174,6 +217,10 @@ erDiagram
     PATIENTS ||--o{ CASES : "is subject of"
     STAFF ||--o{ CASES : "assigned as doctor"
     CASES ||--o| MLEF : "has one MLEF"
+    CASES ||--o| MLR : "has one MLR"
+    MLR ||--o{ MLR_REVISIONS : "has version history"
+    STAFF ||--o{ MLR : "prepared by"
+    STAFF ||--o{ MLR_REVISIONS : "revised by"
     CASES ||--o| POSTMORTEM : "has one PM"
     STAFF ||--o{ MLEF : "examining doctor"
     STAFF ||--o{ POSTMORTEM : "pathologist"
@@ -185,6 +232,7 @@ erDiagram
     CASES ||--o{ LABORATORY_TESTS : "has lab tests"
     STAFF ||--o{ LABORATORY_TESTS : "requested by"
     CASES ||--o{ COURT_REPORTS : "has court reports"
+    STAFF ||--o{ COURT_REPORTS : "prepared by"
     USERS ||--o{ DOCUMENTS : "uploaded by"
     CASES ||--o{ NOTIFICATIONS : "related case"
     USERS ||--o{ NOTIFICATIONS : "target user"

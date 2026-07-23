@@ -17,12 +17,15 @@ public class CourtReportRequest {
     private String reportType;
 
     private LocalDate submissionDate;
+    private LocalDate requestedDate;
 
     @Pattern(regexp = "DRAFT|ISSUED|PENDING_COURT_DATE",
              message = "Report status must be DRAFT, ISSUED, or PENDING_COURT_DATE")
     private String reportStatus;
 
     private String courtName;
+    private String courtCaseNumber;
     private LocalDate dateOfTrial;
     private String certificateOfReceiptRef;
+    private Long preparedById;
 }

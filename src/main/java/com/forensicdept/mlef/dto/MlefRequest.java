@@ -16,7 +16,16 @@ public class MlefRequest {
     @NotNull(message = "Examining doctor ID is required")
     private Long examiningDoctorId;
 
+    // Referral / receipt fields
     private LocalDate dateOfIssue;
+    private LocalDate receivedDate;
+    private String referringHospital;
+    private String referringMedicalOfficer;
+    private String policeStation;
+    private String policeReference;
+    private String caseReference;
+
+    // Examination findings
     private LocalDateTime examinationDateTime;
     private String natureOfBodilyHarm;
     private String causativeWeapon;
