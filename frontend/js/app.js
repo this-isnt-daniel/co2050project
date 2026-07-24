@@ -46,6 +46,8 @@ class App {
             { id: 'nav-evidence', label: 'Evidence Chain', roles: ['ADMIN', 'LAB_STAFF', 'JMO'] },
             { id: 'nav-reports', label: 'Court Reports', roles: ['ADMIN', 'JMO', 'CLERICAL'] },
             { id: 'nav-mlr', label: 'Medico-Legal Reports', roles: ['ADMIN', 'JMO', 'CLERICAL'] },
+            { id: 'nav-daily-report', label: 'Daily Case Report', roles: ['ADMIN', 'JMO', 'CLERICAL'] },
+            { id: 'nav-monthly-stats', label: 'Monthly Statistics', roles: ['ADMIN', 'JMO', 'CLERICAL'] },
         ];
 
         links.forEach(link => {
@@ -93,6 +95,10 @@ class App {
             MlefModule.render(contentArea, role);
         } else if (pageId === 'nav-mlr') {
             MlrModule.render(contentArea, role);
+        } else if (pageId === 'nav-daily-report') {
+            DailyReportModule.render(contentArea, role);
+        } else if (pageId === 'nav-monthly-stats') {
+            MonthlyStatsModule.render(contentArea, role);
         } else {
             contentArea.innerHTML = `<div class="card"><div class="card-header">${pageId}</div><p>Module implementation pending...</p></div>`;
         }
